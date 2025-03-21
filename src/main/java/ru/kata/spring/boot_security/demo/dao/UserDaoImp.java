@@ -2,7 +2,9 @@ package ru.kata.spring.boot_security.demo.dao;
 
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 import ru.kata.spring.boot_security.demo.model.User;
@@ -16,11 +18,22 @@ public class UserDaoImp implements UserDao {
 
     @Override
     public List<User> getAllUsers() {
-        return entityManager.createQuery("select u from User u", User.class).getResultList();
+       System.out.println("searching user name 'admin'. Found " + getUserByName("admin").toString()); //!!!!!!!!!!!!!!
+        return entityManager.createQuery("from User", User.class).getResultList();
     }
 
     public User getUserById(int id) {
         return entityManager.find(User.class, id);
+    }
+
+    public User getUserByName(String name) {
+        try {
+            Query query = entityManager.createQuery("FROM User u WHERE u.name = :name", User.class);
+            query.setParameter("name", name);
+            return (User) query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     public void save(User user) {
