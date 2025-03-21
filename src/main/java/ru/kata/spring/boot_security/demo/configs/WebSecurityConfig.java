@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import ru.kata.spring.boot_security.demo.service.CustomUserDetailsService;
@@ -31,8 +33,14 @@ public class WebSecurityConfig {
         this.userDetailsService = userDetailsService;
     }
 
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
     @Autowired
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+
         auth.userDetailsService(userDetailsService);
     }
 
@@ -41,8 +49,8 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(
                         auth -> auth.requestMatchers("/","/index","/403").permitAll()
-                                .requestMatchers("/user").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
-                                .requestMatchers("/**").hasAuthority("ROLE_ADMIN")
+                                .requestMatchers("/user").hasAnyAuthority("USER", "ADMIN")
+                                .requestMatchers("/**").hasAuthority("ADMIN")
                                 .anyRequest().authenticated()
                 )
                 .formLogin(formLogin -> formLogin

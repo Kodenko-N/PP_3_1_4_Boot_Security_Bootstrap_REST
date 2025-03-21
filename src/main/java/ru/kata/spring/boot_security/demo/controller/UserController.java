@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.controller;
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -7,6 +8,8 @@ import ru.kata.spring.boot_security.demo.dao.RolesDaoImp;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 import java.util.Set;
@@ -53,6 +56,7 @@ public class UserController {
     @PostMapping("/saveUser")
     public String create(@ModelAttribute("user") User user) {
         System.out.println("Controller: saving" + user);
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         userService.save(user);
         return "redirect:/admin";
     }
@@ -68,6 +72,7 @@ public class UserController {
     @PostMapping("/updateUser")
     public String updateUser(@ModelAttribute("user") User user) {
         System.out.println("Controller post user update with user" + user.toString() );
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         userService.update(user);
         return "redirect:/admin";
     }
@@ -87,4 +92,16 @@ public class UserController {
     public String showUser() {
         return "user";
     }
+
+
+    //Инициализация стартовых учетных записей
+    @PostConstruct
+    public void init() {
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        userService.save(new User("admin","Almighty"
+                ,passwordEncoder.encode("admin"),new Role("ADMIN","ADMIN")));
+        userService.save(new User("user","restricted"
+                ,passwordEncoder.encode("user"),new Role("USER","USER")));
+    }
+
 }
