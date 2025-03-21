@@ -1,7 +1,11 @@
 package ru.kata.spring.boot_security.demo.model;
 
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -10,23 +14,40 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @Column(name = "name")
+
+    @Column(name = "name", nullable = false)
     private String name;
+
     @Column(name = "surname")
     private String sureName;
+
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "role")
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 
     public User() {
     }
 
-    public User(String name, String sureName) {
+    public User(String name, String sureName, String password, Role role) {
         this.name = name;
         this.sureName = sureName;
+        this.password = password;
+        this.roles.add(role);
     }
 
-    public User(Long id, String name, String sureName) {
+    public User(Long id, String name, String sureName, String password, Role role) {
         this.id = id;
         this.name = name;
         this.sureName = sureName;
+        this.password = password;
+        this.roles.add(role);
     }
 
     public Long getId() {
@@ -52,10 +73,35 @@ public class User {
     public void setSureName(String sureName) {
         this.sureName = sureName;
     }
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Set<Role> getRoles() {
+        return (Set<Role>) roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public void addRole(Role role) {
+        this.roles.add(role);
+        role.getUsers().add(this);
+    }
+
+    public void removeRole(Role role) {
+        this.roles.remove(role);
+        role.getUsers().remove(this);
+    }
 
     @Override
     public String toString() {
-        return "ID = " + id + " User name is " + name + ", FamilyName is " + sureName;
+        return "ID = " + id + " User name is " + name + ", FamilyName is " + sureName + ", role is " + roles;
     }
 
     @Override
@@ -69,4 +115,6 @@ public class User {
     public int hashCode() {
         return Objects.hash(id, name, sureName);
     }
+
+
 }

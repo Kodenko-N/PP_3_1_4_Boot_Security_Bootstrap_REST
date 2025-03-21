@@ -16,65 +16,33 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
+
     private final SuccessUserHandler successUserHandler;
 
     public WebSecurityConfig(SuccessUserHandler successUserHandler) {
         this.successUserHandler = successUserHandler;
     }
 
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
-        /*
-        http
-                .authorizeRequests()
-                .requestMatchers("/", "/index").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .formLogin()
-                .loginPage("/login")
-                .permitAll()
-                .and()
-                // Configure logout functionality
-                .logout()
-                // Allow everyone to access the logout functionality
-                .permitAll();
-
         http.authorizeHttpRequests(
-                        auth -> auth.requestMatchers("/","/login", "/logut", "/index").permitAll()
-                                .requestMatchers("/users/**", "/users", "/user").hasAuthority("ADMIN")
-                                .requestMatchers("/user").hasAuthority("user")
+                        auth -> auth.requestMatchers("/","/index","/403").permitAll()
+                                .requestMatchers("/user").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                                .requestMatchers("/**").hasAuthority("ROLE_ADMIN")
                                 .anyRequest().authenticated()
                 )
                 .formLogin(formLogin -> formLogin
-                        .usernameParameter("email")
-                        .defaultSuccessUrl("/user", true)
-                        .permitAll()
+                        .permitAll().successHandler(successUserHandler)
                 )
-                .rememberMe(rememberMe -> rememberMe.key("AbcdEfghIjkl..."))
-                .logout(logout -> logout.logoutUrl("/signout").permitAll());
+                .logout(logout -> logout.logoutSuccessUrl("/").permitAll()
+                )
+                .exceptionHandling(exceptions -> exceptions
+                        .accessDeniedPage("/403") // Страница для ошибки доступа
+                );
 
 
         return http.build();
-       */
-        http
-                .authorizeHttpRequests()
-                .requestMatchers("/", "/index").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .formLogin().successHandler(successUserHandler)
-                .permitAll()
-                .and()
-                .logout()
-                .permitAll();
-
-        // Return the configured SecurityFilterChain
-        return http.build();
-
-
     }
-
 
     // аутентификация inMemory
     @Bean
@@ -90,16 +58,6 @@ public class WebSecurityConfig {
                 .password("admin")
                 .roles("ADMIN")
                 .build());
-/*
-        UserDetails user =
-                User.withDefaultPasswordEncoder()
-                        .username("user")
-                        .password("user")
-                        .roles("USER")
-                        .build();
-
- */
-
         return new InMemoryUserDetailsManager(users);
     }
 
