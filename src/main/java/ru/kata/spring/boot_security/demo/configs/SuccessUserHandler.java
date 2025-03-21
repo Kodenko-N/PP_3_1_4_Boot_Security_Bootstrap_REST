@@ -16,13 +16,13 @@ public class SuccessUserHandler implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException {
         Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
-        if (roles.contains("USER")) {
-            System.out.println("User logged in");
-            httpServletResponse.sendRedirect("/user");
-        }
-        else if (roles.contains("ADMIN")) {
+        if (roles.contains("ADMIN")) {
             System.out.println("Admin logged in");
             httpServletResponse.sendRedirect("/admin");
+        }
+        else if (roles.contains("USER")) {
+            System.out.println("User logged in");
+            httpServletResponse.sendRedirect("/user");
         }
         else {
             System.out.println("Access denied for " + authentication.getName() + ", role is "+ roles);

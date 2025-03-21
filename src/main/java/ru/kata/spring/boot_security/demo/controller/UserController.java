@@ -1,6 +1,8 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 import jakarta.annotation.PostConstruct;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,21 +28,18 @@ public class UserController {
         this.rolesDaoImp = rolesDaoImp;
     }
 
+    //Инициализация стартовых учетных записей
+    @PostConstruct
+    public void init() {
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        userService.save(new User("admin","ALMIGHTY"
+                ,passwordEncoder.encode("admin"),new Role("ADMIN","ADMIN")));
+        userService.save(new User("user","RESTRICTED"
+                ,passwordEncoder.encode("user"),new Role("USER","USER")));
+    }
+
     @GetMapping("/admin")
     public String showAllUsers(Model model) {
-        /*
-        Role admin = new Role();
-        admin.setRoleName("admin");
-        admin.setDescription("admin");
-        Role user = new Role();
-        user.setRoleName("user");
-        user.setDescription("user");
-        User adminUser = new User("admin","admin","admin",admin);
-        User userUser = new User("user","user","user",user);
-        create(adminUser);
-        create(userUser);
-        System.out.println("Users are been loaded");
-        */
         List<User> users = userService.getAllUsers();
         model.addAttribute("users", users);
         return "admin";
@@ -89,19 +88,8 @@ public class UserController {
     }
 
     @GetMapping("/user")
-    public String showUser() {
+    public String showUser(Model model, @AuthenticationPrincipal UserDetails userDetails ) {
+        model.addAttribute("user", userService.getUserByName(userDetails.getUsername()));
         return "user";
     }
-
-
-    //Инициализация стартовых учетных записей
-    @PostConstruct
-    public void init() {
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        userService.save(new User("admin","Almighty"
-                ,passwordEncoder.encode("admin"),new Role("ADMIN","ADMIN")));
-        userService.save(new User("user","restricted"
-                ,passwordEncoder.encode("user"),new Role("USER","USER")));
-    }
-
 }

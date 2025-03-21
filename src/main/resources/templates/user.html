@@ -1,11 +1,34 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-    <title>Spring Security Example</title>
+    <title>Private user page</title>
 </head>
 <body>
-<h1>Личная страничка пользователя/UPDATED</h1>
-<a href="/logout">Logout</a>
+<h4>Ваши личные данные</h4>
+<br>
+<table border="1" width="50%" align="center">
+    <thead>
+    <tr>
 
+        <th width="33%">NAME</th>
+        <th width="33%">SURENAME</th>
+        <th >ROLE</th>
+
+
+    </tr>
+    </thead>
+    <tbody>
+        <td th:text="${user.name}"></td>
+        <td th:text="${user.sureName}"></td>
+        <td>
+            <ul>
+                <li th:each="role : ${user.roles}" th:text="${role.roleName}"></li>
+            </ul>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</br>
+<a align="center" href= "/logout"> <h3> Logout </h3> </a>
 </body>
 </html>

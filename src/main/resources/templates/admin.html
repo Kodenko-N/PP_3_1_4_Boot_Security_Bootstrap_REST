@@ -4,45 +4,41 @@
     <title>Users</title>
 </head>
 <body>
-<h2>All Users</h2>
+<h1 align="center">All Users</h1>
 <br>
-<table>
+<table border="1" width="70%" align="center">
     <thead>
     <tr>
-        <th>Name       </th>
-        <th>Surname    </th>
-        <th>Role       </th>
-        <th>Password   </th>
-        <th>Actions    </th>
+
+        <th width="25%">NAME</th>
+        <th width="25%">SURENAME</th>
+        <th width="25%">ROLE</th>
+        <th>ACTION</th>
+
     </tr>
     </thead>
 <tbody>
 <tr th:each="user : ${users}">
     <td th:text="${user.name}"></td>
     <td th:text="${user.sureName}"></td>
-   <!--  <td th:text="${user.roles}"></td> -->
     <td>
         <ul>
             <li th:each="role : ${user.roles}" th:text="${role.roleName}"></li>
         </ul>
     </td>
-    <td th:text="${user.password}"></td>
     <td>
-        <a th:href="@{/updateInfo(userId=${user.id})}">Update</a>
-        <a th:href="@{/deleteUser(userId=${user.id})}">Delete</a>
+        <a th:href="@{/updateInfo(userId=${user.id})}"> <h4> Update </h4> </a>
+        <a th:href="@{/deleteUser(userId=${user.id})}"> <h4> Delete </h4></a>
     </td>
 </tr>
 </tbody>
-
 </table>
 <br/>
-<a th:href="@{/addNewUser}">Add User</a>
+<a align="center" th:href="@{/addNewUser}"> <h3> Add User </h3> </a>
 <div th:if="${#lists.isEmpty(users)}">
     <p>No users found.</p>
 </div>
-<br/>
-<a href="/logout">Logout</a>
-<br/>
-<a href="/user">UserInfo page</a>
+<a align="center" href="/logout"> <h3>Logout </h3> </a>
+<a align="center" href="/user"> <h3>UserInfo page </h3> </a>
 </body>
 </html>
