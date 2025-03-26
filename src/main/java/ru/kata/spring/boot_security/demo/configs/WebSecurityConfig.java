@@ -1,6 +1,5 @@
 package ru.kata.spring.boot_security.demo.configs;
 
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

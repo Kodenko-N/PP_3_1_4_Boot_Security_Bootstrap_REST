@@ -10,7 +10,7 @@ import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 import ru.kata.spring.boot_security.demo.service.RoleService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
@@ -21,16 +21,17 @@ public class UserController {
 
     private final UserService userService;
     private final RoleService rolesService;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserController(UserService userService, RoleService rolesService) {
+    public UserController(UserService userService, RoleService rolesService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.rolesService = rolesService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     //Инициализация стартовых учетных записей
     @PostConstruct
     public void init() {
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         userService.save(new User("admin","ALMIGHTY"
                 ,passwordEncoder.encode("admin"),new Role("ADMIN","ADMIN")));
         userService.save(new User("user","RESTRICTED"
@@ -54,7 +55,7 @@ public class UserController {
     @PostMapping("/saveUser")
     public String create(@ModelAttribute("user") User user) {
         System.out.println("Controller: saving" + user);
-        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.save(user);
         return "redirect:/admin";
     }
@@ -70,7 +71,7 @@ public class UserController {
     @PostMapping("/updateUser")
     public String updateUser(@ModelAttribute("user") User user) {
         System.out.println("Controller post user update with user" + user.toString() );
-        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.update(user);
         return "redirect:/admin";
     }
