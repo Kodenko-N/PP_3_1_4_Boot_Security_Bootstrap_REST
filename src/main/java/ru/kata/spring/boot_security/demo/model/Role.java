@@ -1,23 +1,21 @@
 package ru.kata.spring.boot_security.demo.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-
+import org.springframework.security.core.GrantedAuthority;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "Roles")
-public class Role {
+public class Role implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @NotNull
-    @Column(name = "roleName")
+    @Column(name = "roleName", unique = true, nullable = false)
     private String roleName;
 
     @Column(name = "description")
@@ -46,6 +44,18 @@ public class Role {
         this.users = users;
     }
 
+    //Конструктор для GrantedAuthority
+    public Role(String name) {
+        this.roleName = name.startsWith("ROLE_") ? name : "ROLE_" + name;
+    }
+
+    // Реализация метода из GrantedAuthority
+    @Override
+    public String getAuthority() {
+        return roleName;
+    }
+
+
     public Long getId() {
         return id;
     }
@@ -54,6 +64,7 @@ public class Role {
         this.id = id;
     }
 
+    //Фактически дублирует getAuthority()
     public String getRoleName() {
         return roleName;
     }

@@ -6,26 +6,25 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.kata.spring.boot_security.demo.dao.RolesDaoImp;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
+import ru.kata.spring.boot_security.demo.service.RoleService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
-import java.util.Set;
 
 @Controller
 @RequestMapping("/")
 public class UserController {
 
     private final UserService userService;
-    private final RolesDaoImp rolesDaoImp;
+    private final RoleService rolesService;
 
-    public UserController(UserService userService, RolesDaoImp rolesDaoImp) {
+    public UserController(UserService userService, RoleService rolesService) {
         this.userService = userService;
-        this.rolesDaoImp = rolesDaoImp;
+        this.rolesService = rolesService;
     }
 
     //Инициализация стартовых учетных записей
@@ -48,7 +47,7 @@ public class UserController {
     @GetMapping("/addNewUser")
     public String addUser(Model model) {
         model.addAttribute("user", new User());
-        model.addAttribute("roles", rolesDaoImp.getAllRoles());
+        model.addAttribute("roles", rolesService.getAllRoles());
         return "addUser";
     }
 
@@ -64,7 +63,7 @@ public class UserController {
     public String updateUser(@RequestParam("userId") int id, Model model) {
         System.out.println("Controller get user update with user" + userService.getUserById(id).toString() );
         model.addAttribute("user", userService.getUserById(id));
-        model.addAttribute("roles", rolesDaoImp.getAllRoles());
+        model.addAttribute("roles", rolesService.getAllRoles());
         return "addUser";
     }
 

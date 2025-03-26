@@ -1,15 +1,14 @@
 package ru.kata.spring.boot_security.demo.model;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -24,8 +23,7 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "role")
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -73,8 +71,20 @@ public class User {
     public void setSureName(String sureName) {
         this.sureName = sureName;
     }
+
+    //UserDetails methods implementation
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles;
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return name;
     }
 
     public void setPassword(String password) {
@@ -115,6 +125,4 @@ public class User {
     public int hashCode() {
         return Objects.hash(id, name, sureName);
     }
-
-
 }

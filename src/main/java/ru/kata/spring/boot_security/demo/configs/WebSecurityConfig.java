@@ -7,19 +7,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import ru.kata.spring.boot_security.demo.service.CustomUserDetailsService;
 import ru.kata.spring.boot_security.demo.service.UserService;
-import org.springframework.security.core.userdetails.UserDetailsService;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -27,10 +20,12 @@ public class WebSecurityConfig {
 
     private final SuccessUserHandler successUserHandler;
     private CustomUserDetailsService userDetailsService;
+    private UserService userService;
 
     public WebSecurityConfig(SuccessUserHandler successUserHandler, UserService userService, CustomUserDetailsService userDetailsService) {
         this.successUserHandler = successUserHandler;
         this.userDetailsService = userDetailsService;
+        this.userService = userService;
     }
 
     @Bean
