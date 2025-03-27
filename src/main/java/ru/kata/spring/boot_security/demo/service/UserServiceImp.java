@@ -50,9 +50,9 @@ public class UserServiceImp implements UserService {
         if (user.getId() == null || !Objects.equals(user.getPassword(), "") ) {
             System.out.println("Encoding new password");
             user.setPassword(passwordEncoder.encode(user.getPassword()));
-        } else { //keep the same password for existing user
+        } else {
             System.out.println("Password is NOT changed.");
-            user.setPassword(getUserById(user.getId()).getPassword());
+            user.setPassword(getUserById(user.getId()).getPassword()); //keep the same password for existing user
         }
         userDao.update(user);
     }

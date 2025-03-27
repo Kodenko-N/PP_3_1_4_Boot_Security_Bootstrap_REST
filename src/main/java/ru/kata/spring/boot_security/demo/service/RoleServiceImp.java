@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.service;
 
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.dao.RoleDao;
@@ -10,7 +11,7 @@ import java.util.Set;
 @Transactional
 public class RoleServiceImp implements RoleService {
 
-    private RoleDao roleDao;
+    private final RoleDao roleDao;
     public RoleServiceImp(RoleDao roleDao) {
         this.roleDao = roleDao;
     }
@@ -41,5 +42,10 @@ public class RoleServiceImp implements RoleService {
     @Transactional
     public void delete(int id) {
         roleDao.delete(id);
+    }
+
+    @Override // Converter interface method
+    public Role convert(String id) {
+        return getRoleById(Integer.parseInt(id));
     }
 }
