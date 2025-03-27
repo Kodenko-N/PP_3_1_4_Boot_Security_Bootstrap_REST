@@ -25,9 +25,8 @@ public class UserDaoImp implements UserDao {
 
     public User getUserByName(String name) {
         try {
-            Query query = entityManager.createQuery("FROM User u LEFT JOIN FETCH u.roles WHERE u.name = :name", User.class);
-            query.setParameter("name", name);
-            return (User) query.getSingleResult();
+            return entityManager.createQuery("FROM User u LEFT JOIN FETCH u.roles WHERE u.name = :name", User.class)
+                    .setParameter("name", name).getSingleResult();
         } catch (NoResultException e) {
             return null;
         }
