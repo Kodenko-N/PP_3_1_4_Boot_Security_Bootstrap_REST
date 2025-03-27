@@ -20,7 +20,7 @@ public class User implements UserDetails {
     @Column(name = "surname")
     private String sureName;
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     private String password;
 
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)

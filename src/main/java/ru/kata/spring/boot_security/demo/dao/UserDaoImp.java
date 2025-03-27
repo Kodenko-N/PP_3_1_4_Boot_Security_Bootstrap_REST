@@ -19,7 +19,7 @@ public class UserDaoImp implements UserDao {
         return entityManager.createQuery("from User u JOIN FETCH u.roles", User.class).getResultList();
     }
 
-    public User getUserById(int id) {
+    public User getUserById(long id) {
         return entityManager.find(User.class, id);
     }
 
@@ -43,7 +43,7 @@ public class UserDaoImp implements UserDao {
         entityManager.merge(user);
     }
 
-    public void delete(int id) {
+    public void delete(long id) {
         entityManager.createQuery("DELETE FROM User u WHERE u.id = :id")
                 .setParameter("id", id)
                 .executeUpdate();

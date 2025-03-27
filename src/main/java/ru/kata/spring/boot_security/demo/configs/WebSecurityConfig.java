@@ -18,13 +18,14 @@ import ru.kata.spring.boot_security.demo.service.UserService;
 public class WebSecurityConfig {
 
     private final SuccessUserHandler successUserHandler;
-    private CustomUserDetailsService userDetailsService;
-    private UserService userService;
+    private final CustomUserDetailsService userDetailsService;
+   // private UserService userService;
 
-    public WebSecurityConfig(SuccessUserHandler successUserHandler, UserService userService, CustomUserDetailsService userDetailsService) {
+    public WebSecurityConfig(SuccessUserHandler successUserHandler, CustomUserDetailsService userDetailsService) {
+         //public WebSecurityConfig(SuccessUserHandler successUserHandler, UserService userService, CustomUserDetailsService userDetailsService) {
         this.successUserHandler = successUserHandler;
         this.userDetailsService = userDetailsService;
-        this.userService = userService;
+        //this.userService = userService;
     }
 
     @Bean
@@ -61,31 +62,8 @@ public class WebSecurityConfig {
     }
 
     //аутентификация из БД
-
-
     @Bean
     public UserDetailsService userDetailsService(){
         return new CustomUserDetailsService();
     }
-
-    /*
-    // аутентификация inMemory
-    @Bean
-    public UserDetailsService userDetailsService() {
-        List<UserDetails> users = new ArrayList<>();
-        users.add(User.withDefaultPasswordEncoder()
-                .username("user")
-                .password("user")
-                .roles("USER")
-                .build());
-        users.add(User.withDefaultPasswordEncoder()
-                .username("admin")
-                .password("admin")
-                .roles("ADMIN")
-                .build());
-        return new InMemoryUserDetailsManager(users);
-    }
-
-     */
-
 }

@@ -16,14 +16,15 @@
         <label for="surname">Enter surname: </label>
         <input type="text" th:field="*{sureName}" id="surname"/>
         <br/>
+
+    <!--
     <label for="password">Enter password: </label>
     <input type="text" th:field="*{password}" id="password"/>
-    <br/>
-    <!--
-    <label for="role">Enter role: </label>
-    <input type="text" th:field="*{role}" id="role"/>
-    <br/>
     -->
+    <label for="password">New Password: </label>
+    <input type="password" name="password" id="password"
+           placeholder="Leave empty to keep current"/>
+    <br/>
     <p>
         <label>Roles:
             <input type="checkbox" name="roles"
