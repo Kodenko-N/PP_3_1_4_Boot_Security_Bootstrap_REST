@@ -1,3 +1,5 @@
+//GITHUB TESTING
+
 package ru.kata.spring.boot_security.demo.configs;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +37,6 @@ public class WebSecurityConfig {
         auth.userDetailsService(userService);
     }
 
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(
@@ -57,7 +58,7 @@ public class WebSecurityConfig {
         return http.build();
     }
 
-    //аутентификация из БД
+    //DB authentication
     @Bean
     public UserDetailsService userDetailsService() {
         return new UserServiceImp();
