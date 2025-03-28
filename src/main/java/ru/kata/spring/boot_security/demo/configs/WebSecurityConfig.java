@@ -10,22 +10,23 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import ru.kata.spring.boot_security.demo.service.CustomUserDetailsService;
+//import ru.kata.spring.boot_security.demo.service.CustomUserDetailsService;
 import ru.kata.spring.boot_security.demo.service.UserService;
+import ru.kata.spring.boot_security.demo.service.UserServiceImp;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
 
     private final SuccessUserHandler successUserHandler;
-    private final CustomUserDetailsService userDetailsService;
-   // private UserService userService;
+    //private final CustomUserDetailsService userDetailsService;
+   private final UserService userService;
 
-    public WebSecurityConfig(SuccessUserHandler successUserHandler, CustomUserDetailsService userDetailsService) {
+    public WebSecurityConfig(SuccessUserHandler successUserHandler, UserService userService ) {
          //public WebSecurityConfig(SuccessUserHandler successUserHandler, UserService userService, CustomUserDetailsService userDetailsService) {
         this.successUserHandler = successUserHandler;
-        this.userDetailsService = userDetailsService;
-        //this.userService = userService;
+        //this.userDetailsService = userDetailsService;
+        this.userService = userService;
     }
 
     @Bean
@@ -35,8 +36,7 @@ public class WebSecurityConfig {
 
     @Autowired
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-
-        auth.userDetailsService(userDetailsService);
+        auth.userDetailsService(userService);
     }
 
 
@@ -64,6 +64,6 @@ public class WebSecurityConfig {
     //аутентификация из БД
     @Bean
     public UserDetailsService userDetailsService(){
-        return new CustomUserDetailsService();
+        return new UserServiceImp();
     }
 }
