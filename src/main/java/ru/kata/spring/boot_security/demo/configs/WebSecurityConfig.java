@@ -1,5 +1,3 @@
-//GITHUB TESTING
-
 package ru.kata.spring.boot_security.demo.configs;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,14 +38,19 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(
-                        auth -> auth.requestMatchers("/", "/index", "/403").permitAll()
+                        auth -> auth.requestMatchers("/", "/index", "/403", "/login", "/css/**", "/error").permitAll()
                                 .requestMatchers("/user").hasAnyAuthority("USER", "ADMIN")
                                 .requestMatchers("/**").hasAuthority("ADMIN")
                                 .anyRequest().authenticated()
                 )
-                .formLogin(formLogin -> formLogin
-                        .permitAll().successHandler(successUserHandler)
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .loginProcessingUrl("/login")
+                        .successHandler(successUserHandler)
                 )
+//                .formLogin(formLogin -> formLogin
+//                        .permitAll().successHandler(successUserHandler)
+//                )
                 .logout(logout -> logout.logoutSuccessUrl("/").permitAll()
                 )
                 .exceptionHandling(exceptions -> exceptions

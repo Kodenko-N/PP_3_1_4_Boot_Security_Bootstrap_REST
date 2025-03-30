@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
@@ -28,10 +29,15 @@ public class UserController {
     //Инициализация стартовых учетных записей
     @PostConstruct
     public void init() {
-        userService.save(new User("admin","ALMIGHTY"
+        userService.save(new User("admin","ALMIGHTY", 40, "admin@mail.ru"
                 ,"admin",new Role("ADMIN","ADMIN")));
-        userService.save(new User("user","RESTRICTED"
+        userService.save(new User("user","RESTRICTED", 18, "user@mail.ru"
                 ,"user",new Role("USER","USER")));
+    }
+
+    @GetMapping("/login")
+    public String showLoginPage() {
+        return "login";
     }
 
     @GetMapping("/admin")

@@ -32,6 +32,15 @@ public class UserDaoImp implements UserDao {
         }
     }
 
+    public User getUserByEmail(String email) {
+        try {
+            return entityManager.createQuery("FROM User u LEFT JOIN FETCH u.roles WHERE u.email = :email", User.class)
+                    .setParameter("email", email).getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
     public void save(User user) {
         System.out.println("Saving user" + user.toString());
         entityManager.persist(user);

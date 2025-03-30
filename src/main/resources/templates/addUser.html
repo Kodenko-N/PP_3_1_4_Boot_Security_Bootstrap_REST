@@ -11,16 +11,30 @@
     <span th:text="*{id}"></span>
     <br/>
     <label for="name">Enter name: </label>
-        <input type="text" th:field="*{name}" id="name"/>
-        <br/>
-        <label for="surname">Enter surname: </label>
-        <input type="text" th:field="*{sureName}" id="surname"/>
-        <br/>
-
-    <!--
-    <label for="password">Enter password: </label>
-    <input type="text" th:field="*{password}" id="password"/>
-    -->
+    <input type="text" th:field="*{name}" id="name"
+           minlength="3" maxlength="20"
+           pattern="[A-Za-z0-9А-Яа-яЁё\s]+"
+           title="Only letters, numbers and spaces allowed (3-20 characters)"
+           required
+    />
+    <br/>
+    <label for="surname">Enter surname: </label>
+    <input type="text" th:field="*{sureName}" id="surname"
+           minlength="3" maxlength="40"
+           pattern="[A-Za-z0-9А-Яа-яЁё\s]+"
+           title="Only letters, numbers and spaces allowed (3-40 characters)"
+    />
+    <br/>
+    <label for="age">Enter age: </label>
+    <input type="number" th:field="*{age}" id="age" min="0" max="150" step="1" required/>
+    <br/>
+    <label for="email">Enter email: </label>
+    <input type="email" th:field="*{email}" id="email"
+           minlength="5" maxlength="60"
+           pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+           title="Please enter a valid email address"
+           required/>
+    <br/>
     <label for="password">New Password: </label>
     <input type="password" name="password" id="password"
            placeholder="Leave empty to keep current"/>
@@ -36,8 +50,8 @@
         </label>
     </p>
     <input type="submit" value="OK"/>
-    </form>
-    </body>
-    </html>
+</form>
+</body>
+</html>
 
 

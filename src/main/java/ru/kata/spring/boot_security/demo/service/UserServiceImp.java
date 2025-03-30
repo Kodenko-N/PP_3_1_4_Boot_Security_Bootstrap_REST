@@ -43,6 +43,10 @@ public class UserServiceImp implements UserService {
 
     @Override
     @Transactional(readOnly = true)
+    public User getUserByEmail(String email) { return userDao.getUserByEmail(email); }
+
+    @Override
+    @Transactional(readOnly = true)
     public User getUserById(long id) {
         return userDao.getUserById(id);
     }
@@ -64,6 +68,10 @@ public class UserServiceImp implements UserService {
             System.out.println("Password is NOT changed.");
             user.setPassword(getUserById(user.getId()).getPassword()); //keep the same password for existing user
         }
+        if (user.getRoles() == null || user.getRoles().isEmpty()) {
+            System.out.println("User " + user.getName() + " has no roles, USER role pre-defined ");
+            user.addRole(new Role("USER"));
+        }
         userDao.update(user);
     }
     @Override
@@ -72,24 +80,16 @@ public class UserServiceImp implements UserService {
         userDao.delete(id);
     }
 
-    //UserDetailsService implementation
+    //UserDetailsService implementation. Username = email (!)
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = getUserByName(username);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = getUserByEmail(email);
         if (user == null) {
-            throw new UsernameNotFoundException("User not found with username: " + username);
+            throw new UsernameNotFoundException("User not found with email: " + email);
         }
         return new org.springframework.security.core.userdetails.User(
                 user.getName(),
                 user.getPassword(),
-                mapRolesToAuthorities(user.getRoles()));
-    }
-
-    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Set<Role> roles) {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        for (Role role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
-        }
-        return authorities;
+                user.getRoles());
     }
 }

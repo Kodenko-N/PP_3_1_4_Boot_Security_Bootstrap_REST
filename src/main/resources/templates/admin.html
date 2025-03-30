@@ -10,9 +10,11 @@
     <thead>
     <tr>
 
-        <th width="25%">NAME</th>
-        <th width="25%">SURENAME</th>
-        <th width="25%">ROLE</th>
+        <th width="15%">FIRST NAME</th>
+        <th width="20%">LAST NAME</th>
+        <th width="5%">AGE</th>
+        <th width="25%">EMAIL</th>
+        <th width="15%">ROLE</th>
         <th>ACTION</th>
 
     </tr>
@@ -21,6 +23,8 @@
 <tr th:each="user : ${users}">
     <td th:text="${user.name}"></td>
     <td th:text="${user.sureName}"></td>
+    <td th:text="${user.age}"></td>
+    <td th:text="${user.email}"></td>
     <td>
         <ul>
             <li th:each="role : ${user.roles}" th:text="${role.roleName}"></li>

@@ -1,6 +1,7 @@
 package ru.kata.spring.boot_security.demo.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,6 +22,13 @@ public class User implements UserDetails {
     @Column(name = "surname")
     private String sureName;
 
+    @Column(name = "age", nullable = false)
+    private Integer age = 0;
+
+    @Column(name = "email", nullable = false, unique = true)
+    @Email
+    private String email;
+
     @Column(name = "password", nullable = false)
     private String password;
 
@@ -34,17 +42,21 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String name, String sureName, String password, Role role) {
+    public User(String name, String sureName, Integer age, String email, String password, Role role) {
         this.name = name;
         this.sureName = sureName;
+        this.age = age;
+        this.email = email;
         this.password = password;
         this.roles.add(role);
     }
 
-    public User(Long id, String name, String sureName, String password, Role role) {
+    public User(Long id, String name, String sureName, Integer age, String email, String password, Role role) {
         this.id = id;
         this.name = name;
         this.sureName = sureName;
+        this.age = age;
+        this.email = email;
         this.password = password;
         this.roles.add(role);
     }
@@ -93,11 +105,27 @@ public class User implements UserDetails {
     }
 
     public Set<Role> getRoles() {
-        return (Set<Role>) roles;
+        return roles;
     }
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void addRole(Role role) {
@@ -119,11 +147,11 @@ public class User implements UserDetails {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id && Objects.equals(name, user.name) && Objects.equals(sureName, user.sureName);
+        return Objects.equals(id, user.id) && Objects.equals(name, user.name) && Objects.equals(sureName, user.sureName) && Objects.equals(age, user.age) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(roles, user.roles);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, sureName);
+        return Objects.hash(id, name, sureName, age, email, password, roles);
     }
 }

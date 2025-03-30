@@ -10,16 +10,19 @@
     <thead>
     <tr>
 
-        <th width="33%">NAME</th>
-        <th width="33%">SURENAME</th>
+        <th width="20%">FIRST NAME</th>
+        <th width="25%">LAST NAME</th>
+        <th width="15%">AGE</th>
+        <th width="25%">EMAIL</th>
         <th >ROLE</th>
-
 
     </tr>
     </thead>
     <tbody>
         <td th:text="${user.name}"></td>
         <td th:text="${user.sureName}"></td>
+        <td th:text="${user.age}"></td>
+        <td th:text="${user.email}"></td>
         <td>
             <ul>
                 <li th:each="role : ${user.roles}" th:text="${role.roleName}"></li>
