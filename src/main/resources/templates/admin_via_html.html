@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Users</title>
+</head>
+<body>
+<h1 align="center">All Users</h1>
+<br>
+<table border="1" width="70%" align="center">
+    <thead>
+    <tr>
+
+        <th width="15%">FIRST NAME</th>
+        <th width="20%">LAST NAME</th>
+        <th width="5%">AGE</th>
+        <th width="25%">EMAIL</th>
+        <th width="15%">ROLE</th>
+        <th>ACTION</th>
+
+    </tr>
+    </thead>
+<tbody>
+<tr th:each="user : ${users}">
+    <td th:text="${user.name}"></td>
+    <td th:text="${user.sureName}"></td>
+    <td th:text="${user.age}"></td>
+    <td th:text="${user.email}"></td>
+    <td>
+        <ul>
+            <li th:each="role : ${user.roles}" th:text="${role.roleName}"></li>
+        </ul>
+    </td>
+    <td>
+        <a th:href="@{/updateInfo(userId=${user.id})}"> <h4> Update </h4> </a>
+        <a th:href="@{/deleteUser(userId=${user.id})}"> <h4> Delete </h4></a>
+    </td>
+</tr>
+</tbody>
+</table>
+<br/>
+<a align="center" th:href="@{/addNewUser}"> <h3> Add User </h3> </a>
+<div th:if="${#lists.isEmpty(users)}">
+    <p>No users found.</p>
+</div>
+<a align="center" href="/logout"> <h3>Logout </h3> </a>
+<a align="center" href="/user"> <h3>UserInfo page </h3> </a>
+</body>
+</html>
