@@ -10,7 +10,7 @@
     <input type="hidden" th:field="*{id}"/>
     <span th:text="*{id}"></span>
     <br/>
-    <label for="name">Enter name: </label>
+    <label for="name">Enter First Name: </label>
     <input type="text" th:field="*{name}" id="name"
            minlength="3" maxlength="20"
            pattern="[A-Za-z0-9А-Яа-яЁё\s]+"
@@ -18,7 +18,7 @@
            required
     />
     <br/>
-    <label for="surname">Enter surname: </label>
+    <label for="surname">Enter Second Name: </label>
     <input type="text" th:field="*{sureName}" id="surname"
            minlength="3" maxlength="40"
            pattern="[A-Za-z0-9А-Яа-яЁё\s]+"
