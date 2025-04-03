@@ -63,7 +63,7 @@ public class UserController {
     }
 
     @GetMapping("/updateInfo")
-    public String updateUser(@RequestParam("userId") int id, Model model) {
+    public String updateUser(@RequestParam("userId") Long id, Model model) {
         System.out.println("Controller get user update with user" + userService.getUserById(id).toString() );
         model.addAttribute("user", userService.getUserById(id));
         model.addAttribute("roles", rolesService.getAllRoles());
@@ -78,7 +78,8 @@ public class UserController {
     }
 
     @RequestMapping("/deleteUser")
-    public String deleteUser(@RequestParam("userId") int id) {
+    public String deleteUser(@RequestParam("userId") Long id) {
+        System.out.println("Controller post user update with user with id " + id);
         userService.delete(id);
         return "redirect:/admin";
     }
