@@ -38,7 +38,7 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(
-                        auth -> auth.requestMatchers("/", "/index", "/403", "/login", "/css/**", "/error").permitAll()
+                        auth -> auth.requestMatchers("/", "/index", "/403", "/login", "/logout","/css/**", "/error").permitAll()
                                 .requestMatchers("/user").hasAnyAuthority("USER", "ADMIN")
                                 .requestMatchers("/**").hasAuthority("ADMIN")
                                 .anyRequest().authenticated()
@@ -48,10 +48,7 @@ public class WebSecurityConfig {
                         .loginProcessingUrl("/login")
                         .successHandler(successUserHandler)
                 )
-//                .formLogin(formLogin -> formLogin
-//                        .permitAll().successHandler(successUserHandler)
-//                )
-                .logout(logout -> logout.logoutSuccessUrl("/").permitAll()
+                .logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/").permitAll()
                 )
                 .exceptionHandling(exceptions -> exceptions
                         .accessDeniedPage("/403") // Страница для ошибки доступа

@@ -11,15 +11,17 @@
 <div class="container mt-4">
     <!-- Шапка -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="mb-0">
-            <!----
-            <span th:text="${#authentication.name}">admin@mail.ru</span> with roles:
-            <span th:each="role : ${#authentication.authorities}"
-                  th:text="${role.authority} + ' '">ADMIN USER</span>
-                  -->
-            <h3>TAKE USER DETAILS HERE</h3>
-        </h2>
-        <a th:href="@{/user}" class="btn btn-outline-primary">User</a>
+        <div class="d-flex align-items-center gap-3"> <!-- Добавлен левый столбец -->
+            <a th:href="@{/user}" class="btn btn-outline-primary">User</a>
+            <h2 class="mb-0">
+                <h3>TAKE USER DETAILS HERE</h3>
+            </h2>
+        </div>
+        <!-- Кнопка Logout -->
+        <form th:action="@{/logout}" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <button type="submit" class="btn btn-outline-danger">Logout</button>
+        </form>
     </div>
 
     <!-- Панель управления -->
@@ -58,9 +60,7 @@
                         <td th:text="${user.email}">email</td>
                         <td>
                                 <span th:each="role : ${user.roles}"
-                                      th:text="${#strings.listJoin(user.roles.![roleName], ' ')}">Roles
-
-                                </span>
+                                      th:text="${role + ' '}">Roles</span>
                         </td>
 
                         <td>
@@ -238,7 +238,7 @@
             </div>
              <form th:method="post" th:action="@{/updateUser}" th:object="${user}">
                  <div class="modal-body">
-
+                     <input type="hidden" name="userId" id="UserIdInput"/>
                 <div class="mb-3">
                     <label class="form-label">ID</label>
                     <input type="text" class="form-control"
@@ -287,16 +287,13 @@
                     <label class="form-label">Password</label>
                     <input type="password" class="form-control"
                            name="password"
-                           placeholder="Optional"/>
+                           placeholder="Leave empty to keep current"/>
                 </div>
-
 
                 <div class="mb-3">
-                    <label class="form-label"><strong>Roles</strong></label>
+                    <label class="form-label"><strong>Actual roles</strong></label>
                     <input type="text" class="form-control" id="UserRoles" disabled>
                 </div>
-
-
 
                      <div class="mb-3">
                          <label class="form-label">Roles</label>
@@ -310,7 +307,10 @@
                                  aria-label="Select roles">
                              <option th:each="role : ${roles}"
                                      th:value="${role.id}"
-                                     th:text="${role.roleName}"></option>
+                                     th:text="${role.roleName}"
+                                     th:selected="${user.roles.contains(role)}">
+
+                             </option>
                          </select>
                          <small class="form-text text-muted">
                              Use Ctrl/Cmd for multiple selection
@@ -319,20 +319,14 @@
                              Please select at least one role
                          </div>
                      </div>
-
-
-
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-info">Edit</button>
-                <form id="EditForm" th:action="@{/updateUser}" method="post">
-                    <input type="hidden" name="userId" id="UserIdInput"/>
-
-                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-
-                </form>
             </div>
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                </form>
+
         </div>
     </div>
 </div>
