@@ -14,6 +14,7 @@ import ru.kata.spring.boot_security.demo.model.User;
 import java.util.*;
 
 @Service
+@Transactional(readOnly = true)
 public class UserServiceImp implements UserService {
 
     private UserDao userDao;
@@ -30,21 +31,17 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<User> getAllUsers() {
         return userDao.getAllUsers();
     }
 
     @Override
-    @Transactional(readOnly = true)
     public User getUserByName(String name) { return userDao.getUserByName(name); }
 
     @Override
-    @Transactional(readOnly = true)
     public User getUserByEmail(String email) { return userDao.getUserByEmail(email); }
 
     @Override
-    @Transactional(readOnly = true)
     public User getUserById(long id) {
         return userDao.getUserById(id);
     }
@@ -81,13 +78,7 @@ public class UserServiceImp implements UserService {
     //UserDetailsService implementation. Username = email (!)
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = getUserByEmail(email);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found with email: " + email);
-        }
-        return new org.springframework.security.core.userdetails.User(
-                user.getName(),
-                user.getPassword(),
-                user.getRoles());
+        return Optional.ofNullable(getUserByEmail(email))
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
     }
 }

@@ -5,13 +5,13 @@ import ru.kata.spring.boot_security.demo.model.Role;
 import java.util.Set;
 
 public interface RoleService extends Converter<String, Role> {
-    public Set<Role> getAllRoles();
+    Set<Role> getAllRoles();
 
-    public Role getRoleById(int id);
+    Role getRoleById(int id);
 
-    public void save(Role role);
+    void save(Role role);
 
-    public void update(Role role);
+    void update(Role role);
 
-    public void delete(int id);
+    void delete(int id);
 }

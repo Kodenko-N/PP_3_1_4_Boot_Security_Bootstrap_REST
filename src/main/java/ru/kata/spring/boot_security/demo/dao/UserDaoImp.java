@@ -3,7 +3,6 @@ package ru.kata.spring.boot_security.demo.dao;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Repository;
 import ru.kata.spring.boot_security.demo.model.User;

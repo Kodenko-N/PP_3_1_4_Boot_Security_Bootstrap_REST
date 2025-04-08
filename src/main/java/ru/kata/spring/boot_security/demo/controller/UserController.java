@@ -1,12 +1,10 @@
 package ru.kata.spring.boot_security.demo.controller;
 
-import jakarta.annotation.PostConstruct;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 import ru.kata.spring.boot_security.demo.service.RoleService;
@@ -21,15 +19,6 @@ public class UserController {
     public UserController(UserService userService, RoleService rolesService) {
         this.userService = userService;
         this.rolesService = rolesService;
-    }
-
-    //Инициализация стартовых учетных записей
-    @PostConstruct
-    public void init() {
-        userService.save(new User("admin","ALMIGHTY", 40, "admin@mail.ru"
-                ,"admin",new Role("ADMIN","ADMIN")));
-        userService.save(new User("user","RESTRICTED", 18, "user@mail.ru"
-                ,"user",new Role("USER","USER")));
     }
 
     @GetMapping("/login") //Страница входа
