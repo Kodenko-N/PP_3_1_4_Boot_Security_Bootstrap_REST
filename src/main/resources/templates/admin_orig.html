@@ -47,19 +47,15 @@
 <div class="main-content">
     <!-- Шапка -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-
-
-        <!-- Вывод данных о текущем пользователе -->
-        <div class="d-flex align-items-center gap-3">
+        <div class="d-flex align-items-center gap-3"> <!-- левый столбец -->
             <div class="user-info" style="font-size: 1.2rem; font-weight: 600;">
                 User:
-                <span id="currentUserEmail">user@example.com</span>
+                <span th:text="${currentUser.email}">user@example.com</span>
                 with roles:
-                <span id="currentUserRoles"></span>
+                <span th:each="role : ${currentUser.roles}"
+                      th:text="${role + ' '}"></span>
             </div>
         </div>
-
-
         <!-- Кнопка Logout -->
         <form th:action="@{/logout}" method="post">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
@@ -379,7 +375,7 @@
 <script src="https://kit.fontawesome.com/your-font-awesome-kit.js"></script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         const updateButtons = document.querySelectorAll('.update-btn');
         const updateModal = new bootstrap.Modal('#updateModal');
 
@@ -408,7 +404,7 @@
         });
     });
 
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         // Кнопка Delete
         const actionButtons = document.querySelectorAll('.delete-btn');
         const deleteModal = new bootstrap.Modal('#deleteModal');
@@ -425,41 +421,17 @@
                 const userEmail = btn.dataset.email;
                 const userRoles = btn.dataset.roles;
 
-                document.getElementById('deleteUserId').value = userId;
-                document.getElementById('deleteUserName').value = userName;
-                document.getElementById('deleteUserSurname').value = userSurname;
-                document.getElementById('deleteUserAge').value = userAge;
-                document.getElementById('deleteUserEmail').value = userEmail;
-                document.getElementById('deleteUserRoles').value = userRoles.split(',').join(', ');
-                document.getElementById('deleteUserIdInput').value = userId;
-                deleteModal.show();
+                    document.getElementById('deleteUserId').value = userId;
+                    document.getElementById('deleteUserName').value = userName;
+                    document.getElementById('deleteUserSurname').value = userSurname;
+                    document.getElementById('deleteUserAge').value = userAge;
+                    document.getElementById('deleteUserEmail').value = userEmail;
+                    document.getElementById('deleteUserRoles').value = userRoles.split(',').join(', ');
+                    document.getElementById('deleteUserIdInput').value = userId;
+                    deleteModal.show();
 
             });
         });
-    });
-</script>
-
-    // REST SCRIPTS
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        fetch('/api/currentuser')
-            .then(response => {
-                if (!response.ok) throw new Error('Network response was not ok');
-                return response.json();
-            })
-            .then(data => {
-                // Заполнение email
-                document.getElementById('currentUserEmail').textContent = data.email;
-
-                // Заполнение ролей (используем roleName из объекта роли)
-                const roles = data.roles.map(role => role.roleName).join(', ');
-                document.getElementById('currentUserRoles').textContent = roles;
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                document.getElementById('currentUserEmail').textContent = 'Error loading data';
-            });
     });
 </script>
 

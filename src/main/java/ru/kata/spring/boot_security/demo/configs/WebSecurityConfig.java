@@ -38,7 +38,7 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(
-                        auth -> auth.requestMatchers("/", "/index", "/403", "/login", "/logout","/css/**", "/error").permitAll()
+                        auth -> auth.requestMatchers("/", "/index", "/403", "/login", "/logout","/css/**", "/error", "/api/currentuser").permitAll()
                                 .requestMatchers("/user").hasAnyAuthority("USER", "ADMIN")
                                 .requestMatchers("/**").hasAuthority("ADMIN")
                                 .anyRequest().authenticated()
