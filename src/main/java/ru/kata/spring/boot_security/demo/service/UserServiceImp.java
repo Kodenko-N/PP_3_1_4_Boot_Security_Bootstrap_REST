@@ -55,7 +55,7 @@ public class UserServiceImp implements UserService {
 
     @Override
     @Transactional
-    public void update(User user) {
+    public User update(User user) {
         if (user.getId() == null || !Objects.equals(user.getPassword(), "") ) {
             System.out.println("Encoding new password");
             user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -68,7 +68,9 @@ public class UserServiceImp implements UserService {
             user.addRole(new Role("USER"));
         }
         userDao.update(user);
+        return user;
     }
+
     @Override
     @Transactional
     public void delete(long id) {
