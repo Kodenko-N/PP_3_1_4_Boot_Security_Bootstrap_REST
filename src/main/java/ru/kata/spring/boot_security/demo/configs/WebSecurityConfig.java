@@ -42,30 +42,11 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        http
-//                .csrf(csrf -> csrf.disable())
-//                .authorizeHttpRequests(
-//                        auth -> auth.requestMatchers("/", "/index", "/403", "/login", "/logout","/css/**", "/error", "/api/currentuser").permitAll()
-//                                .requestMatchers("/user").hasAnyAuthority("USER", "ADMIN")
-//                                .requestMatchers("/**").hasAuthority("ADMIN")
-//                                .anyRequest().authenticated()
-//                )
-//                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-//                .formLogin(form -> form
-//                        .loginPage("/login")
-//                        .loginProcessingUrl("/login")
-//                        .successHandler(successUserHandler)
-//                )
-//                .logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/").permitAll()
-//                )
-//                .exceptionHandling(exceptions -> exceptions
-//                        .accessDeniedPage("/403") // Страница для ошибки доступа
-//                );
 
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(
-                        auth -> auth.requestMatchers("/", "/index", "/403", "/login", "/logout","/css/**", "/error", "/api/**").permitAll()
+                        auth -> auth.requestMatchers("/", "/index", "/403", "/login", "/logout","/css/**", "/error", "/**").permitAll()
                                 .requestMatchers("/user").hasAnyAuthority("USER", "ADMIN")
                                 .requestMatchers("/**").hasAuthority("ADMIN")
                                 .anyRequest().authenticated()

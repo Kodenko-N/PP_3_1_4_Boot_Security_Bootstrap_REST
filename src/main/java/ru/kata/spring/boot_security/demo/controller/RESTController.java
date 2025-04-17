@@ -39,11 +39,31 @@ public class RESTController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/users")
-    public ResponseEntity<User> updateUser(@RequestBody User user) {
+//    @PostMapping("/users")
+//    public ResponseEntity<User> updateUser(@RequestBody User user) {
+//        User updatedUser = userService.update(user);
+//        return ResponseEntity.ok(updatedUser);
+//    }
+
+    @PostMapping("/users")
+    public ResponseEntity<User> createUser(@RequestBody User userDTO) {
+        User user = new User();
+        user.setName(userDTO.getName());
+        user.setSureName(userDTO.getSureName());
+        user.setEmail(userDTO.getEmail());
+        user.setAge(userDTO.getAge());
+        user.setPassword(userDTO.getPassword());
+        user.setRoles(userDTO.getRoles()); // Список ролей с ID
         User updatedUser = userService.update(user);
+        System.out.println("Creating user request body: " + userDTO );
+        System.out.println("Creating user " + updatedUser);
         return ResponseEntity.ok(updatedUser);
     }
+
+
+
+
+
 
     @DeleteMapping("/users/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
@@ -80,5 +100,6 @@ public class RESTController {
         public User getCurrentUser() {
             return currentUser;
         }
+
     }
 }

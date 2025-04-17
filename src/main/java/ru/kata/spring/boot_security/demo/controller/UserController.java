@@ -28,10 +28,10 @@ public class UserController {
 
     @GetMapping("/admin") //Основная страница админа
     public String showAllUsers(Model model, @AuthenticationPrincipal UserDetails userDetails) {
-        model.addAttribute("users", userService.getAllUsers());
-        model.addAttribute("roles", rolesService.getAllRoles());
-        model.addAttribute("user", new User());
-        model.addAttribute("currentUser", userService.getUserByName(userDetails.getUsername()) );
+//        model.addAttribute("users", userService.getAllUsers());
+//        model.addAttribute("roles", rolesService.getAllRoles());
+//        model.addAttribute("user", new User());
+//        model.addAttribute("currentUser", userService.getUserByName(userDetails.getUsername()) );
         return "admin";
     }
 
@@ -42,12 +42,12 @@ public class UserController {
         return "redirect:/admin";
     }
 
-    @RequestMapping("/deleteUser") //удаление пользователя
-    public String deleteUser(@RequestParam("userId") Long id) {
-        System.out.println("Controller delete user with id " + id);
-        userService.delete(id);
-        return "redirect:/admin";
-    }
+//    @RequestMapping("/deleteUser") //удаление пользователя
+//    public String deleteUser(@RequestParam("userId") Long id) {
+//        System.out.println("Controller delete user with id " + id);
+//        userService.delete(id);
+//        return "redirect:/admin";
+//    }
 
     @GetMapping("/403")// Страница ошибки доступа
     public String accessDenied() {

@@ -68,6 +68,7 @@ public class UserServiceImp implements UserService {
             user.addRole(new Role("USER"));
         }
         userDao.update(user);
+        System.out.println("UserService working to create user with roles " + user.getRoles());
         return user;
     }
 

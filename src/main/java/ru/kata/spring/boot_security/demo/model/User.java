@@ -139,7 +139,7 @@ public class User implements UserDetails {
 
     @Override
     public String toString() {
-        return "ID = " + id + " User name is " + name + ", FamilyName is " + sureName + ", role is " + roles;
+        return "ID = " + id + " User name is " + name + ", FamilyName is " + sureName + ", age is " + age + " role is " + roles;
     }
 
     @Override
