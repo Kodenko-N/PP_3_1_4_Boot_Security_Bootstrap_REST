@@ -42,12 +42,6 @@ public class UserController {
         return "redirect:/admin";
     }
 
-//    @RequestMapping("/deleteUser") //удаление пользователя
-//    public String deleteUser(@RequestParam("userId") Long id) {
-//        System.out.println("Controller delete user with id " + id);
-//        userService.delete(id);
-//        return "redirect:/admin";
-//    }
 
     @GetMapping("/403")// Страница ошибки доступа
     public String accessDenied() {
