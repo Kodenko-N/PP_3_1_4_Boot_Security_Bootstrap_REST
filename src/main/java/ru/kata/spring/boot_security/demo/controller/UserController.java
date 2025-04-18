@@ -37,8 +37,7 @@ public class UserController {
     }
 
     @GetMapping("/user") //Страница пользователя
-    public String showUser(Model model, @AuthenticationPrincipal UserDetails userDetails ) {
-        model.addAttribute("currentUser", userService.getUserByName(userDetails.getUsername()) );
+    public String showUser( @AuthenticationPrincipal UserDetails userDetails ) {
         return "user";
     }
 }
