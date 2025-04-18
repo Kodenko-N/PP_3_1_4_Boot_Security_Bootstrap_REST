@@ -11,7 +11,10 @@ import ru.kata.spring.boot_security.demo.dao.UserDao;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
 
 @Service
 @Transactional(readOnly = true)
@@ -56,19 +59,21 @@ public class UserServiceImp implements UserService {
     @Override
     @Transactional
     public User update(User user) {
-        if (user.getId() == null || !Objects.equals(user.getPassword(), "") ) {
+        System.out.println();
+        if (user.getId() == null || !Objects.equals(user.getPassword(), "")
+                || !user.getPassword().isEmpty() ) {
             System.out.println("Encoding new password");
             user.setPassword(passwordEncoder.encode(user.getPassword()));
+
         } else {
             System.out.println("Password is NOT changed.");
-            user.setPassword(getUserById(user.getId()).getPassword()); //keep the same password for existing user
+            user.setPassword(getUserById(user.getId()).getPassword());       //keep the same password for existing user
         }
         if (user.getRoles() == null || user.getRoles().isEmpty()) {
             System.out.println("User " + user.getName() + " has no roles, USER role pre-defined ");
             user.addRole(new Role("USER"));
         }
         userDao.update(user);
-        System.out.println("UserService working to create user with roles " + user.getRoles());
         return user;
     }
 

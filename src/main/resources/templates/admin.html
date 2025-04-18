@@ -295,7 +295,7 @@
                 e.preventDefault();
                 fetch('/logout', {
                     method: 'POST'
-                }).then(() => window.location.reload()); //Исправить на ссылку на окно логин (!)
+                }).then(() => window.location.href = '/login');
             });
         }
 

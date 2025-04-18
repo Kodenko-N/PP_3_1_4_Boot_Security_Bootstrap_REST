@@ -3,6 +3,7 @@ package ru.kata.spring.boot_security.demo.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
@@ -19,11 +20,13 @@ public class RESTController {
     private final UserService userService;
     private final RoleService roleService;
 
+
     public RESTController(UserService userService, RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
     }
 
+    //Список пользователей
     @GetMapping("/admin/users")
     public ResponseEntity<AdminDataResponse> getAllUsers(@AuthenticationPrincipal UserDetails userDetails) {
         User currentUser = userService.getUserByName(userDetails.getUsername());
@@ -39,38 +42,31 @@ public class RESTController {
         return ResponseEntity.ok(response);
     }
 
-//    @PostMapping("/users")
-//    public ResponseEntity<User> updateUser(@RequestBody User user) {
-//        User updatedUser = userService.update(user);
-//        return ResponseEntity.ok(updatedUser);
-//    }
-
+    //Создание нового пользователя
     @PostMapping("/users")
     public ResponseEntity<User> createUser(@RequestBody User userDTO) {
-        User user = new User();
-        user.setName(userDTO.getName());
-        user.setSureName(userDTO.getSureName());
-        user.setEmail(userDTO.getEmail());
-        user.setAge(userDTO.getAge());
-        user.setPassword(userDTO.getPassword());
-        user.setRoles(userDTO.getRoles()); // Список ролей с ID
-        User updatedUser = userService.update(user);
-        System.out.println("Creating user request body: " + userDTO );
-        System.out.println("Creating user " + updatedUser);
+        User updatedUser = userService.update(userDTO);
+        System.out.println("(REST) Creating user " + updatedUser);
         return ResponseEntity.ok(updatedUser);
     }
 
+    //Обновление существующего пользователя
+    @PutMapping("/users/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody User userDTO) {
+            userDTO.setId(id);
+            User updatedUser = userService.update(userDTO);
+            return ResponseEntity.ok(updatedUser);
+    }
 
-
-
-
-
+    //Удаление пользователя
     @DeleteMapping("/users/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.delete(id);
+        System.out.println("(REST) Deleting user with id" + id);
         return ResponseEntity.noContent().build();
     }
 
+    //Текущий пользователь
     @GetMapping("/user")
     public ResponseEntity<User> getCurrentUser(@AuthenticationPrincipal UserDetails userDetails) {
         User user = userService.getUserByName(userDetails.getUsername());

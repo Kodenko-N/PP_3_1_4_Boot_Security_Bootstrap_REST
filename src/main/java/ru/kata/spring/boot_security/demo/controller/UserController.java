@@ -35,12 +35,12 @@ public class UserController {
         return "admin";
     }
 
-    @PostMapping("/updateUser") //Создание и изменение пользователя
-    public String updateUser(@ModelAttribute("user") User user) {
-        System.out.println("Controller post user update with user" + user.toString() );
-        userService.update(user);
-        return "redirect:/admin";
-    }
+//    @PostMapping("/updateUser") //Создание и изменение пользователя
+//    public String updateUser(@ModelAttribute("user") User user) {
+//        System.out.println("Controller post user update with user" + user.toString() );
+//        userService.update(user);
+//        return "redirect:/admin";
+//    }
 
 
     @GetMapping("/403")// Страница ошибки доступа
