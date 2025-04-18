@@ -30,10 +30,18 @@
     </style>
 </head>
 <body class="bg-light">
-<div class="sidebar">
-    <!-- Навигация без изменений -->
-</div>
 
+<div class="sidebar">
+    <nav class="nav flex-column">
+        <h4 class="mb-4">Menu</h4>
+        <a class="nav-link active" href="#" th:href="@{/admin}">
+            <i class="fas fa-home me-2"></i>Admin
+        </a>
+        <a class="nav-link" href="#" th:href="@{/user}">
+            <i class="fas fa-users me-2"></i>User
+        </a>
+    </nav>
+</div>
 <div class="main-content">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div class="user-info" style="font-size: 1.2rem; font-weight: 600;">
@@ -188,7 +196,7 @@
         let allRoles = [];
         let deleteUserId = null;
         const deleteModal = new bootstrap.Modal('#deleteConfirmationModal');
-        const userModal = new bootstrap.Modal('#userModal');
+      //  const userModal = new bootstrap.Modal('#userModal');
 
         // Загрузка начальных данных
         Promise.all([

@@ -28,20 +28,8 @@ public class UserController {
 
     @GetMapping("/admin") //Основная страница админа
     public String showAllUsers(Model model, @AuthenticationPrincipal UserDetails userDetails) {
-//        model.addAttribute("users", userService.getAllUsers());
-//        model.addAttribute("roles", rolesService.getAllRoles());
-//        model.addAttribute("user", new User());
-//        model.addAttribute("currentUser", userService.getUserByName(userDetails.getUsername()) );
         return "admin";
     }
-
-//    @PostMapping("/updateUser") //Создание и изменение пользователя
-//    public String updateUser(@ModelAttribute("user") User user) {
-//        System.out.println("Controller post user update with user" + user.toString() );
-//        userService.update(user);
-//        return "redirect:/admin";
-//    }
-
 
     @GetMapping("/403")// Страница ошибки доступа
     public String accessDenied() {
